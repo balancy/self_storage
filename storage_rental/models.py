@@ -96,10 +96,14 @@ class Item(models.Model):
 
 
 class Order(models.Model):
-    person_name = models.CharField('ФИО', max_length=200)
-    phone_number = PhoneNumberField('номер телефона')
-    passport_number = models.CharField('Номер паспорта', max_length=200)
-    birth_date = models.DateField('дата рождения')
+    person_name = models.CharField('ФИО', max_length=200, blank=True)
+    phone_number = PhoneNumberField('номер телефона', blank=True)
+    passport_number = models.CharField(
+        'Номер паспорта',
+        max_length=200,
+        blank=True,
+    )
+    birth_date = models.DateField('дата рождения', blank=True, null=True)
 
 
 class RentalOrder(Order):

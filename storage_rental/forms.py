@@ -13,12 +13,10 @@ class FormPrettifyFieldsMixin(forms.Form):
 class RentBoxForm(FormPrettifyFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.RentalOrder
-        fields = (
-            'person_name',
-            'phone_number',
-            'passport_number',
-            'birth_date',
-            'storage',
-            'size',
-            'duration',
-        )
+        fields = ('storage', 'size', 'duration')
+
+
+class StoreItemForm(FormPrettifyFieldsMixin, forms.ModelForm):
+    class Meta:
+        model = models.StoringOrder
+        fields = ('storage', 'item', 'duration')
