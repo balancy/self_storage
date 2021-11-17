@@ -1,13 +1,58 @@
 from django.http.response import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from django.urls import reverse
+from django.shortcuts import get_object_or_404, render
+from django.http import JsonResponse
 
 from . import forms
 from . import models
+from .models import Storage
+
+
+def serialize_place(place):
+    return {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [place.longitude, place.latitude]
+                },
+                "properties": {
+                    "title": place.name,
+                    "placeId": place.pk,
+                    "detailsUrl": reverse('place_view', args=[place.pk])
+                }
+            }]
+    }
 
 
 def index(request):
-    return HttpResponse("Main page")
+    all_places = Storage.objects.all()
+    context = {
+        'all_places': [serialize_place(place) for place in all_places]
+    }
+    return render(request, "index.html", context)
+
+
+def get_place_view(request, place_id):
+    current_place = get_object_or_404(Storage, pk=place_id)
+
+    context = {
+        'title': current_place.name,
+        # 'imgs': [image.image.url for image in current_place.images.all()],
+        'lat': current_place.latitude,
+        # 'description_short': current_place.description_short,
+        # 'description_long': current_place.content,
+        'coordinates': {
+            'lat': current_place.latitude,
+            'lng': current_place.longitude
+        }
+    }
+    return JsonResponse(context, safe=False,
+                        json_dumps_params={'ensure_ascii': False, 'indent': 2})
 
 
 class RentalOrderView(CreateView):
