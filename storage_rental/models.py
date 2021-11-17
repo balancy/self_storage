@@ -55,26 +55,6 @@ class Storage(models.Model):
         return f'Склад по координатам ({self.latitude}, {self.longitude})'
 
 
-class StorageBox(models.Model):
-    storage = models.ForeignKey(
-        Storage,
-        related_name='boxes',
-        verbose_name='склад',
-        on_delete=models.PROTECT,
-    )
-
-    size = models.PositiveSmallIntegerField(
-        'размер', validators=[MaxValueValidator(20), MinValueValidator(1)]
-    )
-
-    class Meta:
-        verbose_name = 'бокс'
-        verbose_name_plural = 'боксы'
-
-    def __str__(self):
-        return f'Бокс {self.size} кв.м.'
-
-
 class Item(models.Model):
     class ItemType(models.TextChoices):
         SKIS = 'SKIS', _('Лыжи')
@@ -123,16 +103,23 @@ class Order(models.Model):
 
 
 class RentalOrder(Order):
-    box = models.ForeignKey(
-        StorageBox,
+    storage = models.ForeignKey(
+        Storage,
         related_name='rental_orders',
-        verbose_name='бокс',
+        verbose_name='склад',
         on_delete=models.PROTECT,
+    )
+
+    size = models.PositiveSmallIntegerField(
+        'размер бокса',
+        validators=[MaxValueValidator(20), MinValueValidator(1)],
+        default=1,
     )
 
     duration = models.PositiveSmallIntegerField(
         'срок аренды',
         validators=[MaxValueValidator(12), MinValueValidator(1)],
+        default=1,
     )
 
     total_price = models.DecimalField(
@@ -142,12 +129,17 @@ class RentalOrder(Order):
         validators=[MinValueValidator(0)],
     )
 
+    is_processed = models.BooleanField(
+        'обработан',
+        default=False,
+    )
+
     class Meta:
         verbose_name = 'заказ на аренду бокса'
         verbose_name_plural = 'заказы на аренду боксов'
 
     def __str__(self):
-        return f'Заказ на аренду {self.box} на {self.duration} месяцев'
+        return f'Заказ на аренду бокса размером {self.size} кв. м. на {self.duration} месяцев'
 
 
 class StoringOrder(Order):
@@ -187,6 +179,11 @@ class StoringOrder(Order):
         max_digits=6,
         decimal_places=2,
         validators=[MinValueValidator(0)],
+    )
+
+    is_processed = models.BooleanField(
+        'обработан',
+        default=False,
     )
 
     class Meta:

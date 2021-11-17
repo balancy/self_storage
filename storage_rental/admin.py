@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Item, RentalOrder, Storage, StorageBox, StoringOrder
+from .models import Item, RentalOrder, Storage, StoringOrder
 
 
 @admin.register(Item)
@@ -35,14 +35,16 @@ class StorageAdmin(admin.ModelAdmin):
     ordering = ('name', 'latitude', 'longitude')
 
 
-@admin.register(StorageBox)
-class StorageBoxAdmin(admin.ModelAdmin):
-    list_display = ordering = ('storage', 'size')
-
-
 @admin.register(RentalOrder)
 class RentalOrderAdmin(admin.ModelAdmin):
-    list_display = ('person_name', 'box', 'duration', 'total_price')
+    list_display = (
+        'person_name',
+        'storage',
+        'size',
+        'duration',
+        'is_processed',
+        'total_price',
+    )
 
 
 @admin.register(StoringOrder)
@@ -52,5 +54,6 @@ class StoringOrderAdmin(admin.ModelAdmin):
         'storage',
         'item',
         'duration',
+        'is_processed',
         'total_price',
     )
