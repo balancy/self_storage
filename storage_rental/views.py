@@ -18,23 +18,22 @@ def serialize_place(place):
                 "type": "Feature",
                 "geometry": {
                     "type": "Point",
-                    "coordinates": [place.longitude, place.latitude]
+                    "coordinates": [place.longitude, place.latitude],
                 },
                 "properties": {
                     "title": place.name,
                     "placeId": place.pk,
-                    "detailsUrl": reverse('place_view', args=[place.pk])
-                }
-            }]
+                    "detailsUrl": reverse('place_view', args=[place.pk]),
+                },
+            }
+        ],
     }
 
 
 def index(request):
     all_places = Storage.objects.all()
-    context = {
-        'all_places': [serialize_place(place) for place in all_places]
-    }
-    return render(request, "index.html", context)
+    context = {'all_places': [serialize_place(place) for place in all_places]}
+    return render(request, "storage_rental/index.html", context)
 
 
 def get_place_view(request, place_id):
@@ -48,11 +47,14 @@ def get_place_view(request, place_id):
         # 'description_long': current_place.content,
         'coordinates': {
             'lat': current_place.latitude,
-            'lng': current_place.longitude
-        }
+            'lng': current_place.longitude,
+        },
     }
-    return JsonResponse(context, safe=False,
-                        json_dumps_params={'ensure_ascii': False, 'indent': 2})
+    return JsonResponse(
+        context,
+        safe=False,
+        json_dumps_params={'ensure_ascii': False, 'indent': 2},
+    )
 
 
 class RentalOrderView(CreateView):
