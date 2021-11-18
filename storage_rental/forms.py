@@ -19,10 +19,7 @@ class RentBoxForm(FormPrettifyFieldsMixin, forms.ModelForm):
 
 
 class ApplicationForm(FormPrettifyFieldsMixin, forms.ModelForm):
-    is_agree = forms.BooleanField(
-        required=True,
-        label='Соглашаюсь с условиями обработки персональных данных',
-    )
+    is_agree = forms.BooleanField(required=True, label="")
 
     class Meta:
         model = models.Order

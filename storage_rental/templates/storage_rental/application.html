@@ -12,8 +12,15 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+        <p>Соглашаюсь с условиями обработки персональных данных</p>
+        <details>
+            <summary>Условия</summary>
+            Я обязуюсь ...
+        </details>
+        <br>
         <button class="btn btn-outline-dark" type="submit">Перейти к
             оплате</button>
     </form>
 </div>
+
 {% endblock %}
