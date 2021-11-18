@@ -4,7 +4,6 @@
 {% block header %}
   <title>Self Storage - Главная</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
-  <link rel="stylesheet" href="https://unpkg.com/@ansur/leaflet-pulse-icon@0.1.1/dist/L.Icon.Pulse.css">
 {% endblock %}
 
 {% block content %}
@@ -41,7 +40,6 @@
 
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-providers/1.10.1/leaflet-providers.min.js" integrity="sha256-EV/ywRtxUOBICwOsLtPpYEONoBF6g+ShAcLX1Ts48GA=" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@ansur/leaflet-pulse-icon@0.1.1/dist/L.Icon.Pulse.js"></script>
 
   <div id="map" class="container" style="height:400px"></div>
 
@@ -66,19 +64,7 @@
             return
           }
 
-          let color = geoJsonPoint.properties.color || 'orange';
-
-          var pulsingIcon = L.icon.pulse({
-            iconSize: [12, 12],
-            color: color,
-            fillColor: color,
-            heartbeat: 2.5,
-          });
-
-          let marker = L.marker(latlng, {
-            icon: pulsingIcon,
-            riseOnHover: true,
-          });
+          let marker = L.marker(latlng, {});
 
           marker.bindTooltip(geoJsonPoint.properties.address);
           return marker;
