@@ -52,7 +52,9 @@ class Storage(models.Model):
         verbose_name_plural = 'склады'
 
     def __str__(self):
-        return f'Склад по координатам ({self.latitude}, {self.longitude})'
+        return f'{self.address}.\n' \
+               f'Стоимость: {self.base_price}\n' \
+               f'каждый следующий кв.м. +150 руб. в месяц: {self.additional_price}'
 
 
 class Item(models.Model):
@@ -107,6 +109,20 @@ class Order(models.Model):
 
 
 class RentalOrder(Order):
+    class Duration(models.IntegerChoices):
+        ONE_MONTH = '1', _('1 месяц')
+        TWO_MONTHS = '2', _('2 месяца')
+        THREE_MONTHS = '3', _('3 месяца')
+        FOUR_MONTHS = '4', _('4 месяца')
+        FIVE_MONTHS = '5', _('5 месяцев')
+        SIX_MONTHS = '6', _('полгода')
+
+    duration = models.PositiveSmallIntegerField(
+        'срок хранения',
+        choices=Duration.choices,
+        default=Duration.ONE_MONTH,
+    )
+
     storage = models.ForeignKey(
         Storage,
         related_name='rental_orders',
@@ -117,12 +133,6 @@ class RentalOrder(Order):
     size = models.PositiveSmallIntegerField(
         'размер бокса',
         validators=[MaxValueValidator(20), MinValueValidator(1)],
-        default=1,
-    )
-
-    duration = models.PositiveSmallIntegerField(
-        'срок аренды',
-        validators=[MaxValueValidator(12), MinValueValidator(1)],
         default=1,
     )
 
