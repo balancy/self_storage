@@ -114,7 +114,13 @@ class RentalOrder(Order):
         THREE_MONTHS = '3', _('3 месяца')
         FOUR_MONTHS = '4', _('4 месяца')
         FIVE_MONTHS = '5', _('5 месяцев')
-        SIX_MONTHS = '6', _('полгода')
+        SIX_MONTHS = '6', _('6 месяцев')
+        SEVEN_MONTHS = '7', _('7 месяцев')
+        EIGHT_MONTHS = '8', _('8 месяцев')
+        NINE_MONTHS = '9', _('9 месяцев')
+        TEN_MONTHS = '10', _('10 месяцев')
+        ELEVEN_MONTHS = '11', _('11 месяцев')
+        TWELVE_MONTHS = '12', _('1 год')
 
     duration = models.PositiveSmallIntegerField(
         'срок хранения',
