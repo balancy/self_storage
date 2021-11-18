@@ -1,6 +1,12 @@
 {% extends 'storage_rental/base.html' %}
 {% load static %}
 
+{% block header %}
+  <title>Self Storage - Главная</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/@ansur/leaflet-pulse-icon@0.1.1/dist/L.Icon.Pulse.css">
+{% endblock %}
+
 {% block content %}
  <main role="main" class="container">
       <div class="row">
