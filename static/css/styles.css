@@ -20,3 +20,7 @@ html, body, #map {
     color: red;
     width: 100px;
 }
+
+.container {
+    width: 800px;
+}

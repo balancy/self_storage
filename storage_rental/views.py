@@ -11,6 +11,11 @@ from .models import Storage
 
 def serialize_place(place):
     return {
+        "name": place.name,
+        "address": place.address,
+        "image": place.image.url,
+        "base_price": place.base_price,
+        "additional_price": place.additional_price,
         "type": "FeatureCollection",
         "features": [
             {
