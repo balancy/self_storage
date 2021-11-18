@@ -66,7 +66,8 @@
 
           let marker = L.marker(latlng, {});
 
-          marker.bindTooltip(geoJsonPoint.properties.address);
+          marker.bindTooltip(geoJsonPoint.properties.full_name);
+
           return marker;
         }
     }).addTo(map);
