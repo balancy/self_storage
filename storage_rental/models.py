@@ -47,13 +47,14 @@ class Storage(models.Model):
         default=150,
     )
 
+    image = models.ImageField('Картинка', upload_to='media', null=True)
+
     class Meta:
         verbose_name = 'склад'
         verbose_name_plural = 'склады'
 
     def __str__(self):
-        return f'{self.address}.\n' \
-               f'Стоимость: {self.base_price} ₽ в мес.'
+        return f'{self.address}.\n' f'Стоимость: {self.base_price} ₽ в мес.'
 
 
 class Item(models.Model):

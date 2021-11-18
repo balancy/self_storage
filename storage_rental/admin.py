@@ -23,8 +23,14 @@ class ItemAdmin(admin.ModelAdmin):
 
 @admin.register(Storage)
 class StorageAdmin(admin.ModelAdmin):
+    def image_tag(self, obj):
+        return format_html(
+            '<img src="{}" height="200px;" />'.format(obj.image.url)
+        )
+
     list_display = (
         'name',
+        'image_tag',
         'address',
         'latitude',
         'longitude',
