@@ -7,7 +7,7 @@
     <div v-bind:class="{'sidebar-content': 1, 'bg-white': selectedPlace, 'bg-secondary': !selectedPlace}">
       <div v-if="promptVisible" class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">
         <img class="d-block select-place-prompt mb-4" src="{% static 'img/hand-pointer-regular.svg' %}" alt="Select place">
-        <h4>Выберите место на карте</h4>
+        <h4>Выберите склад на карте</h4>
       </div>
 
       <div class="align-items-center justify-content-center d-flex" v-if="loading" style="height: 100%;">
@@ -160,15 +160,17 @@
           });
 
           marker.bindTooltip(geoJsonPoint.properties.title);
-          marker.bindPopup(function (layer) {
-            return geoJsonPoint.properties.title;
-          })
+<!--          marker.bindPopup(function (layer) {-->
+<!--            return geoJsonPoint.properties.title;-->
+<!--          })-->
 
-          marker.on('click', function(event){
-            log.debug('Feature selected', geoJsonPoint);
-            sidebar.show();
-            loadPlaceInfo(geoJsonPoint.properties.placeId, geoJsonPoint.properties.detailsUrl);
-          });
+
+<!--          marker.on('click', function(event){-->
+<!--            log.debug('Feature selected', geoJsonPoint);-->
+<!--            sidebar.show();-->
+<!--            loadPlaceInfo(geoJsonPoint.properties.placeId, geoJsonPoint.properties.detailsUrl);-->
+<!--          });-->
+
           return marker;
         }
     }).addTo(map);
