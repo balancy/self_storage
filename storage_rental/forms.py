@@ -17,6 +17,17 @@ class RentBoxForm(FormPrettifyFieldsMixin, forms.ModelForm):
         fields = ('storage', 'size', 'duration')
 
 
+class ApplicationForm(FormPrettifyFieldsMixin, forms.ModelForm):
+    class Meta:
+        model = models.Order
+        fields = (
+            'person_name',
+            'phone_number',
+            'passport_number',
+            'birth_date',
+        )
+
+
 class StoreItemForm(FormPrettifyFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.StoringOrder

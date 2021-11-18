@@ -11,5 +11,10 @@ urlpatterns = [
         views.StoringOrderView.as_view(),
         name='deposit_items',
     ),
-    path('application_form', views.application_form, name='application_form'),
+    path(
+        'application/<int:pk>/',
+        views.ApplicationView.as_view(),
+        name='application',
+    ),
+    path('payment', views.payment, name='payment'),
 ]

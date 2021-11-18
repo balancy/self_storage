@@ -44,7 +44,7 @@ class StorageAdmin(admin.ModelAdmin):
 @admin.register(RentalOrder)
 class RentalOrderAdmin(admin.ModelAdmin):
     list_display = (
-        'person_name',
+        '__str__',
         'storage',
         'size',
         'duration',
@@ -56,7 +56,7 @@ class RentalOrderAdmin(admin.ModelAdmin):
 @admin.register(StoringOrder)
 class StoringOrderAdmin(admin.ModelAdmin):
     list_display = (
-        'person_name',
+        '__str__',
         'storage',
         'item',
         'duration',

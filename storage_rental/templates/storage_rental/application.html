@@ -1,0 +1,19 @@
+{% extends 'storage_rental/base.html' %}
+{% load static %}
+
+{% block header %}
+<title>Self Storage - Анкета</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Введите данные</h1>
+    <br />
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-outline-dark" type="submit">Перейти к
+            оплате</button>
+    </form>
+</div>
+{% endblock %}
