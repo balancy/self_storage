@@ -89,11 +89,6 @@ class ApplicationView(UpdateView):
     template_name = "storage_rental/application.html"
     success_url = reverse_lazy("index")
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        print(context)
-        return context
-
 
 class StoringOrderView(CreateView):
     model = models.StoringOrder

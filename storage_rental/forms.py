@@ -7,8 +7,9 @@ class FormPrettifyFieldsMixin(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for name, obj in self.fields.items():
-            obj.widget.attrs['class'] = f'form-control mt-3'
-            obj.widget.attrs['id'] = name
+            if name != 'is_agree':
+                obj.widget.attrs['class'] = f'form-control mt-3'
+                obj.widget.attrs['id'] = name
 
 
 class RentBoxForm(FormPrettifyFieldsMixin, forms.ModelForm):
@@ -18,6 +19,11 @@ class RentBoxForm(FormPrettifyFieldsMixin, forms.ModelForm):
 
 
 class ApplicationForm(FormPrettifyFieldsMixin, forms.ModelForm):
+    is_agree = forms.BooleanField(
+        required=True,
+        label='Соглашаюсь с условиями обработки персональных данных',
+    )
+
     class Meta:
         model = models.Order
         fields = (

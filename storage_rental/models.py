@@ -102,7 +102,7 @@ class Order(models.Model):
     phone_number = PhoneNumberField('номер телефона', blank=True)
     passport_number = models.CharField(
         'Номер паспорта',
-        max_length=200,
+        max_length=20,
         blank=True,
     )
     birth_date = models.DateField('дата рождения', blank=True, null=True)
