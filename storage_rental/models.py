@@ -54,7 +54,7 @@ class Storage(models.Model):
         verbose_name_plural = 'склады'
 
     def __str__(self):
-        return f'{self.address}.\n' f'Стоимость: {self.base_price} ₽ в мес.'
+        return f'{self.name}, {self.address}'
 
 
 class Item(models.Model):
@@ -137,7 +137,7 @@ class RentalOrder(Order):
     )
 
     size = models.PositiveSmallIntegerField(
-        'размер бокса в м² (каждый следующий м² + 150 ₽ в мес.)',
+        'размер бокса в м²',
         validators=[MaxValueValidator(20), MinValueValidator(1)],
         default=1,
     )

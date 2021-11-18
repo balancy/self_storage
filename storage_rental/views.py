@@ -1,8 +1,8 @@
 from django.http.response import HttpResponse
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-
-from django.shortcuts import render
+import simplejson as json
 
 from . import forms
 from . import models
@@ -45,6 +45,30 @@ class RentalOrderView(CreateView):
     template_name = "storage_rental/rental_order.html"
     success_url = reverse_lazy('application_form')
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(RentalOrderView, self).get_context_data(
+            *args, **kwargs
+        )
+
+        # transform Storage queryset to dictionary excluding keys id and _state
+        storages_context_to_pass = {
+            storage['id']: {
+                key: value
+                for key, value in storage.items()
+                if key not in ['id', '_state']
+            }
+            for storage in [
+                storage.__dict__ for storage in Storage.objects.all()
+            ]
+        }
+
+        context['storages'] = json.dumps(
+            storages_context_to_pass,
+            use_decimal=True,
+        )
+
+        return context
+
     def form_valid(self, form):
         base_price = form.instance.storage.base_price
         additional_price = form.instance.storage.additional_price
@@ -76,9 +100,6 @@ class StoringOrderView(CreateView):
         return super().form_valid(form)
 
 
-def deposit_items(request):
-    return HttpResponse("Deposit items page")
-
-
 def application_form(request):
+    print(f'{request=}')
     return HttpResponse("Введите свои данные")
