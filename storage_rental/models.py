@@ -163,6 +163,17 @@ class RentalOrder(Order):
 
 
 class StoringOrder(Order):
+    class Duration(models.IntegerChoices):
+        ONE_WEEK = '1', _('1 неделя')
+        TWO_WEEKS = '2', _('2 недели')
+        THREE_WEEKS = '3', _('3 недели')
+        ONE_MONTH = '4', _('1 месяц')
+        TWO_MONTHS = '8', _('2 месяца')
+        THREE_MONTHS = '12', _('3 месяца')
+        FOUR_MONTHS = '16', _('4 месяца')
+        FIVE_MONTHS = '20', _('5 месяцев')
+        SIX_MONTHS = '24', _('полгода')
+
     storage = models.ForeignKey(
         Storage,
         related_name='storing_orders',
@@ -176,17 +187,6 @@ class StoringOrder(Order):
         verbose_name='инвентарь',
         on_delete=models.PROTECT,
     )
-
-    class Duration(models.IntegerChoices):
-        ONE_WEEK = '1', _('1 неделя')
-        TWO_WEEKS = '2', _('2 недели')
-        THREE_WEEKS = '3', _('3 недели')
-        ONE_MONTH = '4', _('1 месяц')
-        TWO_MONTHS = '8', _('2 месяца')
-        THREE_MONTHS = '12', _('3 месяца')
-        FOUR_MONTHS = '16', _('4 месяца')
-        FIVE_MONTHS = '20', _('5 месяцев')
-        SIX_MONTHS = '24', _('полгода')
 
     duration = models.PositiveSmallIntegerField(
         'срок хранения',
