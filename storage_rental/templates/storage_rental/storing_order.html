@@ -26,7 +26,7 @@
 
     <br>
 
-    <p>Выбранный инвентарь:</p>
+    <p>Выбранный инвентарь</p>
     <img width="400px;" height="400px;" id="item_img"/>
 
     <script type="text/babel">
@@ -36,6 +36,7 @@
 
             const [selectedItem, setSelectedItem] = React.useState();
             const [duration, setDuration] = React.useState(1);
+            const [quantity, setQuantity] = React.useState(1);
             const [totalPrice, setTotalPrice] = React.useState(0);
 
             React.useEffect(() => {
@@ -45,8 +46,8 @@
                     let month_price = item.month_storage_price
 
                     duration < 4
-                        ? setTotalPrice(duration * week_price)
-                        : setTotalPrice(Math.floor(duration / 4) * month_price)
+                        ? setTotalPrice(quantity * duration * week_price)
+                        : setTotalPrice(quantity * Math.floor(duration / 4) * month_price)
 
                     imageEl.style.display = 'block';
                     imageEl.setAttribute('src', item.image)
@@ -55,9 +56,10 @@
                     setTotalPrice(0)
                     imageEl.style.display = 'none';
                 }
-            }, [selectedItem, duration]);
+            }, [selectedItem, duration, quantity]);
 
             let imageEl = document.querySelector("#item_img");
+
             const itemEl = document.querySelector("#item");
             itemEl.addEventListener("change", () => {
                 setSelectedItem(itemEl.value);
@@ -66,6 +68,11 @@
             const durationEl = document.querySelector("#duration");
             durationEl.addEventListener("change", () => {
                 setDuration(durationEl.value || 0)
+            });
+
+            const quantityEl = document.querySelector("#quantity");
+            quantityEl.addEventListener("change", () => {
+                setQuantity(quantityEl.value || 0)
             });
 
             return (

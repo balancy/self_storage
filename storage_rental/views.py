@@ -131,11 +131,12 @@ class StoringOrderView(CreateView):
         week_price = form.instance.item.week_storage_price
         month_price = form.instance.item.month_storage_price
         duration = form.instance.duration
+        quantity = form.instance.quantity
 
         if duration < 4:
-            total_price = duration * week_price
+            total_price = quantity * duration * week_price
         else:
-            total_price = (duration // 4) * month_price
+            total_price = quantity * (duration // 4) * month_price
 
         form.instance.total_price = total_price
         return super().form_valid(form)

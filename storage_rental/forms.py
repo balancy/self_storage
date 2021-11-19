@@ -61,4 +61,4 @@ class PaymentForm(FormPrettifyFieldsMixin, forms.ModelForm):
 class StoreItemForm(FormPrettifyFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.StoringOrder
-        fields = ('storage', 'item', 'duration')
+        fields = ('storage', 'item', 'quantity', 'duration')

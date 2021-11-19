@@ -198,6 +198,12 @@ class StoringOrder(Order):
         on_delete=models.PROTECT,
     )
 
+    quantity = models.PositiveIntegerField(
+        'количество',
+        validators=[MinValueValidator(1)],
+        default=1,
+    )
+
     duration = models.PositiveSmallIntegerField(
         'срок хранения',
         choices=Duration.choices,
@@ -209,4 +215,4 @@ class StoringOrder(Order):
         verbose_name_plural = 'заказы на хранение инвентаря'
 
     def __str__(self):
-        return f'Заказ на хранение {self.item} на {self.duration} месяцев'
+        return f'Заказ на хранение {self.quantity} {self.item} на {self.duration} месяцев'
