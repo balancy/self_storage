@@ -1,4 +1,8 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core import validators
+from django.core.validators import (
+    MinValueValidator,
+    MaxValueValidator,
+)
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
@@ -98,14 +102,40 @@ class Item(models.Model):
 
 
 class Order(models.Model):
-    person_name = models.CharField('ФИО', max_length=200, blank=True)
-    phone_number = PhoneNumberField('номер телефона', blank=True)
+    person_name = models.CharField(
+        'ФИО',
+        max_length=200,
+        blank=True,
+    )
+    phone_number = PhoneNumberField(
+        'номер телефона',
+        blank=True,
+    )
     passport_number = models.CharField(
         'Номер паспорта',
         max_length=20,
         blank=True,
     )
     birth_date = models.DateField('дата рождения', blank=True, null=True)
+
+    storage = models.ForeignKey(
+        Storage,
+        related_name='rental_orders',
+        verbose_name='склад',
+        on_delete=models.PROTECT,
+    )
+
+    total_price = models.DecimalField(
+        'общая стоимость аренды',
+        max_digits=6,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+    )
+
+    is_processed = models.BooleanField(
+        'обработан',
+        default=False,
+    )
 
 
 class RentalOrder(Order):
@@ -129,29 +159,10 @@ class RentalOrder(Order):
         default=Duration.ONE_MONTH,
     )
 
-    storage = models.ForeignKey(
-        Storage,
-        related_name='rental_orders',
-        verbose_name='склад',
-        on_delete=models.PROTECT,
-    )
-
     size = models.PositiveSmallIntegerField(
         'размер бокса в м²',
         validators=[MaxValueValidator(20), MinValueValidator(1)],
         default=1,
-    )
-
-    total_price = models.DecimalField(
-        'общая стоимость аренды',
-        max_digits=6,
-        decimal_places=2,
-        validators=[MinValueValidator(0)],
-    )
-
-    is_processed = models.BooleanField(
-        'обработан',
-        default=False,
     )
 
     class Meta:
@@ -174,13 +185,6 @@ class StoringOrder(Order):
         FIVE_MONTHS = '20', _('5 месяцев')
         SIX_MONTHS = '24', _('полгода')
 
-    storage = models.ForeignKey(
-        Storage,
-        related_name='storing_orders',
-        verbose_name='склад',
-        on_delete=models.PROTECT,
-    )
-
     item = models.ForeignKey(
         Item,
         related_name='storing_orders',
@@ -192,18 +196,6 @@ class StoringOrder(Order):
         'срок хранения',
         choices=Duration.choices,
         default=Duration.ONE_WEEK,
-    )
-
-    total_price = models.DecimalField(
-        'общая стоимость хранения',
-        max_digits=6,
-        decimal_places=2,
-        validators=[MinValueValidator(0)],
-    )
-
-    is_processed = models.BooleanField(
-        'обработан',
-        default=False,
     )
 
     class Meta:
