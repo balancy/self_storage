@@ -98,7 +98,7 @@ class Item(models.Model):
         verbose_name_plural = 'предметы инвентаря'
 
     def __str__(self):
-        return self.type
+        return self.get_type_display()
 
 
 class Order(models.Model):
