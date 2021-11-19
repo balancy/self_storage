@@ -1,3 +1,4 @@
+from typing import Generic
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -87,6 +88,15 @@ class ApplicationView(UpdateView):
     model = models.Order
     form_class = forms.ApplicationForm
     template_name = "storage_rental/application.html"
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('payment', kwargs={'pk': self.object.id})
+
+
+class PaymentView(UpdateView):
+    model = models.Order
+    form_class = forms.PaymentForm
+    template_name = "storage_rental/payment.html"
     success_url = reverse_lazy("index")
 
 

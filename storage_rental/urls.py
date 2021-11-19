@@ -16,5 +16,5 @@ urlpatterns = [
         views.ApplicationView.as_view(),
         name='application',
     ),
-    path('payment', views.payment, name='payment'),
+    path('payment/<int:pk>', views.PaymentView.as_view(), name='payment'),
 ]
