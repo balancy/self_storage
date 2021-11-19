@@ -13,6 +13,7 @@ class Storage(models.Model):
         'название',
         max_length=100,
         blank=True,
+        db_index=True,
     )
 
     address = models.CharField(
@@ -73,6 +74,7 @@ class Item(models.Model):
         choices=ItemType.choices,
         default=ItemType.SKIS,
         verbose_name='тип инвентаря',
+        db_index=True,
     )
 
     image = models.ImageField('Картинка', upload_to='media')
@@ -107,6 +109,7 @@ class Order(models.Model):
         max_length=200,
         null=True,
         validators=[MinLengthValidator(10)],
+        db_index=True,
     )
     phone_number = PhoneNumberField(
         'номер телефона',

@@ -38,28 +38,30 @@ class StorageAdmin(admin.ModelAdmin):
         'additional_price',
     )
 
-    ordering = ('name', 'latitude', 'longitude')
+    ordering = ('name',)
 
 
 @admin.register(RentalOrder)
 class RentalOrderAdmin(admin.ModelAdmin):
     list_display = (
         '__str__',
+        'person_name',
         'storage',
-        'size',
-        'duration',
         'is_processed',
         'total_price',
     )
+
+    ordering = ('person_name',)
 
 
 @admin.register(StoringOrder)
 class StoringOrderAdmin(admin.ModelAdmin):
     list_display = (
         '__str__',
+        'person_name',
         'storage',
-        'item',
-        'duration',
         'is_processed',
         'total_price',
     )
+
+    ordering = ('person_name',)
