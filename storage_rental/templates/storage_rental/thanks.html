@@ -1,0 +1,19 @@
+{% extends 'storage_rental/base.html' %}
+{% load static %}
+
+{% block header %}
+<title>Self Storage - Спасибо за заказ</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <br />
+    <h1>Спасибо за заказ</h1>
+    <br />
+    <p>Вам на почту в течение следующих нескольких минут придёт письмо с подробными инструкциями как пользоваться арендованным складом.</p>
+    <form action="{% url 'index' %}">
+        <button class="btn btn-outline-dark" type="submit">Вернуться на главную</button>
+    </form>
+</div>
+
+{% endblock %}

@@ -17,4 +17,5 @@ urlpatterns = [
         name='application',
     ),
     path('payment/<int:pk>', views.PaymentView.as_view(), name='payment'),
+    path('thanks', views.thanks, name='thanks'),
 ]

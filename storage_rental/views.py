@@ -97,7 +97,7 @@ class PaymentView(UpdateView):
     model = models.Order
     form_class = forms.PaymentForm
     template_name = "storage_rental/payment.html"
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy("thanks")
 
 
 class StoringOrderView(CreateView):
@@ -120,6 +120,5 @@ class StoringOrderView(CreateView):
         return super().form_valid(form)
 
 
-def payment(request):
-    print(f'{request=}')
-    return HttpResponse("Оплатите")
+def thanks(request):
+    return render(request, "storage_rental/thanks.html")
