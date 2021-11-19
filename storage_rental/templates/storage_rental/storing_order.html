@@ -24,6 +24,11 @@
 
     <div id="app" width="100%"></div>
 
+    <br>
+
+    <p>Выбранный инвентарь:</p>
+    <img width="400px;" height="400px;" id="item_img"/>
+
     <script type="text/babel">
 
         const App = () => {
@@ -42,12 +47,17 @@
                     duration < 4
                         ? setTotalPrice(duration * week_price)
                         : setTotalPrice(Math.floor(duration / 4) * month_price)
+
+                    imageEl.style.display = 'block';
+                    imageEl.setAttribute('src', item.image)
                 }
                 else {
                     setTotalPrice(0)
+                    imageEl.style.display = 'none';
                 }
             }, [selectedItem, duration]);
 
+            let imageEl = document.querySelector("#item_img");
             const itemEl = document.querySelector("#item");
             itemEl.addEventListener("change", () => {
                 setSelectedItem(itemEl.value);
