@@ -10,7 +10,7 @@ class FormPrettifyFieldsMixin(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for name, obj in self.fields.items():
-            if name not in ('is_agree', 'is_processed'):
+            if name not in ('is_agree', 'is_processed', 'birth_date'):
                 obj.widget.attrs['class'] = f'form-control mt-3'
                 obj.widget.attrs['id'] = name
 
@@ -26,26 +26,6 @@ class ApplicationForm(FormPrettifyFieldsMixin, forms.ModelForm):
         required=True,
         label="Соглашаюсь с условиями обработки персональных данных",
     )
-
-    # def clean(self):
-    #     cleaned_data = self.cleaned_data
-
-    #     min_field_length = 10
-
-    #     fields = {
-    #         'person_name': 'ФИО',
-    #         'phone_number': 'Номер телефона',
-    #         'passport_number': 'Номер паспорта',
-    #     }
-
-    #     for field_name, field_label in fields.items():
-    #         if len(cleaned_data[field_name]) < min_field_length:
-    #             raise ValidationError(
-    #                 _(
-    #                     f'Длина <{field_label}> должна быть не '
-    #                     f'менее {min_field_length} символов',
-    #                 )
-    #             )
 
     class Meta:
         model = models.Order

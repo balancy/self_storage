@@ -1,5 +1,5 @@
-from django.core import validators
 from django.core.validators import (
+    MinLengthValidator,
     MinValueValidator,
     MaxValueValidator,
 )
@@ -105,18 +105,21 @@ class Order(models.Model):
     person_name = models.CharField(
         'ФИО',
         max_length=200,
-        blank=True,
+        null=True,
+        validators=[MinLengthValidator(10)],
     )
     phone_number = PhoneNumberField(
         'номер телефона',
-        blank=True,
+        null=True,
+        validators=[MinLengthValidator(10)],
     )
     passport_number = models.CharField(
         'Номер паспорта',
         max_length=20,
-        blank=True,
+        null=True,
+        validators=[MinLengthValidator(10)],
     )
-    birth_date = models.DateField('дата рождения', blank=True, null=True)
+    birth_date = models.DateField('дата рождения', null=True)
 
     storage = models.ForeignKey(
         Storage,
