@@ -1,5 +1,3 @@
-from typing import Generic
-from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -8,7 +6,7 @@ import simplejson as json
 
 from . import forms
 from . import models
-from .models import Storage
+from .models import Item, Storage
 
 
 def serialize_place(place):
@@ -104,7 +102,30 @@ class StoringOrderView(CreateView):
     model = models.StoringOrder
     form_class = forms.StoreItemForm
     template_name = "storage_rental/storing_order.html"
-    success_url = reverse_lazy('application_form')
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('application', kwargs={'pk': self.object.id})
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(StoringOrderView, self).get_context_data(
+            *args, **kwargs
+        )
+
+        items_context_to_pass = {
+            item['id']: {
+                key: value
+                for key, value in item.items()
+                if key not in ['id', '_state']
+            }
+            for item in [item.__dict__ for item in Item.objects.all()]
+        }
+
+        context['items'] = json.dumps(
+            items_context_to_pass,
+            use_decimal=True,
+        )
+
+        return context
 
     def form_valid(self, form):
         week_price = form.instance.item.week_storage_price
