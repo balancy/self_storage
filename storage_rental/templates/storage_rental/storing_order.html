@@ -26,8 +26,12 @@
 
     <br>
 
-    <p>Выбранный инвентарь</p>
-    <img width="400px;" height="400px;" id="item_img"/>
+    <div id="item_details">
+        <br/>
+        <img width="400px;" height="400px;" id="item_img"/>
+        <br/>
+        <p id="item_month_price"></p>
+    </div>
 
     <script type="text/babel">
 
@@ -49,16 +53,19 @@
                         ? setTotalPrice(quantity * duration * week_price)
                         : setTotalPrice(quantity * Math.floor(duration / 4) * month_price)
 
-                    imageEl.style.display = 'block';
+                    itemDetailsEl.style.display = 'block';
                     imageEl.setAttribute('src', item.image)
+                    itemMonthPriceEl.innerHTML = 'Стоимость хранения за ед. ' + week_price + ' руб/неделю, ' + month_price + ' руб/месяц'
                 }
                 else {
                     setTotalPrice(0)
-                    imageEl.style.display = 'none';
+                    itemDetailsEl.style.display = 'none';
                 }
             }, [selectedItem, duration, quantity]);
 
             let imageEl = document.querySelector("#item_img");
+            let itemDetailsEl = document.querySelector("#item_details");
+            let itemMonthPriceEl = document.querySelector("#item_month_price");
 
             const itemEl = document.querySelector("#item");
             itemEl.addEventListener("change", () => {
