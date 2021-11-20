@@ -159,7 +159,7 @@ class RentalOrder(Order):
         NINE_MONTHS = '9', _('9 месяцев')
         TEN_MONTHS = '10', _('10 месяцев')
         ELEVEN_MONTHS = '11', _('11 месяцев')
-        TWELVE_MONTHS = '12', _('1 год')
+        TWELVE_MONTHS = '12', _('12 месяцев')
 
     duration = models.PositiveSmallIntegerField(
         'срок хранения',

@@ -19,13 +19,17 @@ class PromoFieldMixin(forms.Form):
     promocode = forms.CharField(label='Промокод', required=False)
 
 
-class RentBoxForm(PromoFieldMixin, FormPrettifyFieldsMixin, forms.ModelForm):
+class RentBoxForm(FormPrettifyFieldsMixin, PromoFieldMixin, forms.ModelForm):
     class Meta:
         model = models.RentalOrder
-        fields = ('storage', 'size', 'duration')
+        fields = ('storage', 'size', 'duration', 'total_price', 'discount')
+        widgets = {
+            'total_price': forms.HiddenInput(),
+            'discount': forms.HiddenInput(),
+        }
 
 
-class StoreItemForm(PromoFieldMixin, FormPrettifyFieldsMixin, forms.ModelForm):
+class StoreItemForm(FormPrettifyFieldsMixin, PromoFieldMixin, forms.ModelForm):
     class Meta:
         model = models.StoringOrder
         fields = (

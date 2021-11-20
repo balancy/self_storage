@@ -60,11 +60,9 @@
 
         let currentDiscount = 0;
         let totalPrice = 0;
+        let currentItem;
         let weekPrice;
         let monthPrice;
-        let duration;
-        let quantity;
-        let currentItem;
 
         const calculateTotalPrice = () => {
             currentItem = allItems[itemEl.value];
@@ -72,12 +70,18 @@
             if (currentItem){
                 weekPrice = currentItem.week_storage_price;
                 monthPrice = currentItem.month_storage_price;
-                duration = durationEl.value;
-                quantity = quantityEl.value;
+                let duration = durationEl.value;
+                let quantity = quantityEl.value;
 
                 totalPrice = duration < 4
-                    ? (1 - currentDiscount/100) * quantity * duration * weekPrice
-                    : (1 - currentDiscount/100) * quantity * Math.floor(duration / 4) * monthPrice
+                    ? Math.ceil(
+                        (1 - currentDiscount/100) * quantity *
+                            duration * weekPrice
+                      )
+                    : Math.ceil(
+                        (1 - currentDiscount/100) * quantity *
+                            Math.floor(duration / 4) * monthPrice
+                      )
             } else {
                 totalPrice = 0;
             }
@@ -87,7 +91,7 @@
         }
 
         const checkPromocode = () => {
-            currentPromocode = allPromocodes[promocodeEl.value];
+            let currentPromocode = allPromocodes[promocodeEl.value];
 
             if (currentPromocode) {
                 startDate = currentPromocode.start_date;

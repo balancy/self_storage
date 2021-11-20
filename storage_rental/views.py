@@ -74,16 +74,6 @@ class RentalOrderView(CreateView):
 
         return context
 
-    def form_valid(self, form):
-        base_price = form.instance.storage.base_price
-        additional_price = form.instance.storage.additional_price
-        size = form.instance.size
-        duration = form.instance.duration
-        total_price = duration * (base_price + additional_price * (size - 1))
-
-        form.instance.total_price = total_price
-        return super().form_valid(form)
-
 
 class StoringOrderView(CreateView):
     model = models.StoringOrder
