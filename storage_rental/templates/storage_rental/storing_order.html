@@ -7,29 +7,37 @@
 
 {% block content %}
 <div class="container">
-    <br>
-    <h1>Сезонное хранение</h1>
-    <br>
+    <h1 class="my-4">Сезонное хранение</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button class="btn btn-outline-dark" type="submit">Сдать на
-            хранение</button>
+        <button class="btn btn-dark my-3" type="submit">
+            Сдать на хранение
+        </button>
     </form>
 
-    <br>
-    <strong>Итоговая сумма: <span id="totalPrice">0</span></strong>
-    <br>
+    <p class="mt-1 mb-3">
+        <strong>Итоговая сумма: <span id="totalPrice">0</span></strong>
+    </p>
 
-    <div id="item_details" style="display: none;">
-        <br/>
-        <img width="400px;" height="400px;" id="item_img"/>
-        <br/>
+    <p class="my-3">
+        <button class="btn btn-outline-dark" onclick="checkPromocode()">
+            Применить промокод
+        </button>
+        <span class="ml-2" id="discount">
+        </span>
+    </p>
+
+    <div class="my-3" id="item_details" style="display: none;">
         <p id="item_price_details"></p>
+        <img class="mt-1" width="400px;" height="400px;" id="item_img"/>
     </div>
 
     <script>
-        const all_items = JSON.parse("{{ items|escapejs }}");
+        const allItems = JSON.parse("{{ items|escapejs }}");
+        const allPromocodes = JSON.parse("{{ promocodes|escapejs }}");
+
+        const today = new Date().toISOString().slice(0, 10)
 
         const itemEl = document.querySelector("#item");
         const durationEl = document.querySelector("#duration");
@@ -39,35 +47,77 @@
         const itemImageEl = document.querySelector("#item_img");
         const itemDetailsEl = document.querySelector("#item_details");
         const itemPriceDetailsEl = document.querySelector("#item_price_details");
+        const promocodeEl = document.querySelector("#promocode");
+        const discountEl = document.querySelector("#discount");
 
         [itemEl, quantityEl, durationEl].forEach(item => {
             item.addEventListener('change', event => {
-                updatePageElements();
+                updateItemDetais();
             })
         })
 
-        const updatePageElements = () => {
-            let item = all_items[itemEl.value]
+        let currentDiscount = 0;
+        let week_price;
+        let month_price;
+        let duration;
+        let quantity;
+        let currentItem;
 
-            if (item) {
-                let week_price = item.week_storage_price
-                let month_price = item.month_storage_price
-                let duration = durationEl.value
-                let quantity = quantityEl.value
+        const calculateTotalPrice = () => {
+            currentItem = allItems[itemEl.value];
+
+            if (currentItem){
+                week_price = currentItem.week_storage_price;
+                month_price = currentItem.month_storage_price;
+                duration = durationEl.value;
+                quantity = quantityEl.value;
 
                 totalPriceEl.innerHTML = duration < 4
-                        ? quantity * duration * week_price
-                        : quantity * Math.floor(duration / 4) * month_price
+                        ? (1 - currentDiscount/100) * quantity * duration * week_price
+                        : (1 - currentDiscount/100) * quantity * Math.floor(duration / 4) * month_price
+            } else {
+                totalPriceEl.innerHTML = 0;
+            }
+        }
+
+        const checkPromocode = () => {
+            currentPromocode = allPromocodes[promocodeEl.value];
+
+            if (currentPromocode) {
+                startDate = currentPromocode.start_date;
+                endDate = currentPromocode.end_date;
+                isActive = today > startDate && today < endDate;
+
+                if (isActive) {
+                    currentDiscount = currentPromocode.discount;
+                    discountEl.innerHTML = "Скидка по промокоду: " +
+                        currentDiscount + "%";
+                }
+            } else {
+                currentDiscount = 0;
+                discountEl.innerHTML = "";
+            }
+
+            calculateTotalPrice();
+        }
+
+        const updateItemDetais = () => {
+            currentItem = allItems[itemEl.value]
+
+            if (currentItem) {
+                week_price = currentItem.week_storage_price;
+                month_price = currentItem.month_storage_price;
 
                 itemDetailsEl.style.display = 'block';
-                console.log(item.image)
-                itemImageEl.setAttribute('src', 'media/' + item.image)
-                itemPriceDetailsEl.innerHTML = 'Стоимость хранения за ед. ' + week_price + ' руб/неделю, ' + month_price + ' руб/месяц'
-            }
-            else {
-                totalPriceEl.innerHTML = 0
+                itemImageEl.setAttribute('src', 'media/' + currentItem.image);
+                itemPriceDetailsEl.innerHTML =
+                    'Стоимость хранения за единицу: ' + week_price +
+                    ' руб/неделю, ' + month_price + ' руб/месяц';
+            } else {
                 itemDetailsEl.style.display = 'none';
             }
+
+            calculateTotalPrice();
         }
     </script>
 

@@ -7,20 +7,22 @@
 
 {% block content %}
 <div class="container">
-    <br />
-    <h1>Аренда бокса</h1>
-    <br />
+    <h1 class="my-4">Аренда бокса</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button class="btn btn-outline-dark" type="submit">Арендовать</button>
+        <button class="btn btn-outline-dark my-3" type="submit">
+            Арендовать
+        </button>
     </form>
 
     <br>
-    <strong>Итоговая сумма: <span id="totalPrice">0</span></strong>
+    <p class="mt-1 mb-3">
+        <strong>Итоговая сумма: <span id="totalPrice">0</span>
+    </p>
 
     <script>
-        const all_storages = JSON.parse("{{ storages|escapejs }}");
+        const allStorages = JSON.parse("{{ storages|escapejs }}");
 
         const storageEl = document.querySelector("#storage");
         const sizeEl = document.querySelector("#size");
@@ -34,15 +36,15 @@
         })
 
         const recalculateTotalPrice = () => {
-            let storage = all_storages[storageEl.value]
+            let storage = allStorages[storageEl.value]
             let size = sizeEl.value
 
             if (storage && size != 0) {
-                let base_price = storage.base_price
-                let additional_price = storage.additional_price
+                let basePrice = storage.base_price
+                let additionalPrice = storage.additional_price
                 let duration = durationEl.value || 0
 
-                totalPriceEl.innerHTML = duration * (base_price + additional_price * (size - 1))
+                totalPriceEl.innerHTML = duration * (basePrice + additionalPrice * (size - 1))
             }
             else {
                 totalPriceEl.innerHTML = 0

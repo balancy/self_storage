@@ -6,7 +6,7 @@ import simplejson as json
 
 from . import forms
 from . import models
-from .models import Item, Storage
+from .models import Item, Storage, PromoСode
 
 
 def serialize_place(place):
@@ -39,12 +39,12 @@ def index(request):
     return render(request, "storage_rental/index.html", context)
 
 
-def serialize_queryset(model):
+def serialize_queryset(model, field='id'):
     return {
-        record['id']: {
+        record[field]: {
             key: value
             for key, value in record.items()
-            if key not in ['id', '_state']
+            if key not in [field, '_state']
         }
         for record in [instance.__dict__ for instance in model.objects.all()]
     }
@@ -63,6 +63,10 @@ class RentalOrderView(CreateView):
             *args, **kwargs
         )
 
+        context['promocodes'] = json.dumps(
+            serialize_queryset(PromoСode, field='code'),
+            default=str,
+        )
         context['storages'] = json.dumps(
             serialize_queryset(Storage),
             use_decimal=True,
@@ -94,6 +98,10 @@ class StoringOrderView(CreateView):
             *args, **kwargs
         )
 
+        context['promocodes'] = json.dumps(
+            serialize_queryset(PromoСode, field='code'),
+            default=str,
+        )
         context['items'] = json.dumps(
             serialize_queryset(Item),
             use_decimal=True,

@@ -16,7 +16,7 @@ class FormPrettifyFieldsMixin(forms.Form):
 
 
 class PromoFieldMixin(forms.Form):
-    promocode = forms.IntegerField(label='Промокод')
+    promocode = forms.CharField(label='Промокод', required=False)
 
 
 class RentBoxForm(PromoFieldMixin, FormPrettifyFieldsMixin, forms.ModelForm):
