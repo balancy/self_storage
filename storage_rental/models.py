@@ -52,7 +52,7 @@ class Storage(models.Model):
         default=150,
     )
 
-    image = models.ImageField('Картинка', upload_to='media', null=True)
+    image = models.ImageField('Картинка', null=True)
 
     class Meta:
         verbose_name = 'склад'
@@ -77,7 +77,7 @@ class Item(models.Model):
         db_index=True,
     )
 
-    image = models.ImageField('Картинка', upload_to='media')
+    image = models.ImageField('Картинка')
 
     week_storage_price = models.DecimalField(
         'стоимость недельного хранения',
@@ -216,3 +216,21 @@ class StoringOrder(Order):
 
     def __str__(self):
         return f'Заказ на хранение {self.quantity} {self.item} на {self.duration} месяцев'
+
+
+class PromoСode(models.Model):
+    code = models.CharField(
+        'код',
+        max_length=15,
+        db_index=True,
+    )
+    start_date = models.DateField('начальная дата действия')
+    end_date = models.DateField('конечная дата действия')
+    discount = models.PositiveIntegerField('скидка')
+
+    class Meta:
+        verbose_name = 'промокод'
+        verbose_name_plural = 'промокоды'
+
+    def __str__(self):
+        return f'Промокод <{self.code}>'

@@ -1,14 +1,16 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Item, RentalOrder, Storage, StoringOrder
+from .models import Item, PromoСode, RentalOrder, Storage, StoringOrder
 
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
     def image_tag(self, obj):
         return format_html(
-            '<img src="{}" height="200px;" />'.format(obj.image.url)
+            '<img src="{}" width="200px;" height="200px;" />'.format(
+                obj.image.url
+            )
         )
 
     list_display = (
@@ -25,7 +27,9 @@ class ItemAdmin(admin.ModelAdmin):
 class StorageAdmin(admin.ModelAdmin):
     def image_tag(self, obj):
         return format_html(
-            '<img src="{}" height="200px;" />'.format(obj.image.url)
+            '<img src="{}" width="200px;" height="200px;" />'.format(
+                obj.image.url
+            )
         )
 
     list_display = (
@@ -65,3 +69,10 @@ class StoringOrderAdmin(admin.ModelAdmin):
     )
 
     ordering = ('person_name',)
+
+
+@admin.register(PromoСode)
+class PromocodeAdmin(admin.ModelAdmin):
+    list_display = ('code', 'start_date', 'end_date', 'discount')
+
+    ordering = ('code',)
