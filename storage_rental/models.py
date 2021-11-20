@@ -133,7 +133,7 @@ class Order(models.Model):
 
     total_price = models.DecimalField(
         'общая стоимость аренды',
-        max_digits=6,
+        max_digits=10,
         decimal_places=2,
         validators=[MinValueValidator(0)],
     )
