@@ -39,6 +39,17 @@ def index(request):
     return render(request, "storage_rental/index.html", context)
 
 
+def serialize_queryset(model):
+    return {
+        record['id']: {
+            key: value
+            for key, value in record.items()
+            if key not in ['id', '_state']
+        }
+        for record in [instance.__dict__ for instance in model.objects.all()]
+    }
+
+
 class RentalOrderView(CreateView):
     model = models.RentalOrder
     form_class = forms.RentBoxForm
@@ -52,20 +63,8 @@ class RentalOrderView(CreateView):
             *args, **kwargs
         )
 
-        # transform Storage queryset to dictionary excluding keys id and _state
-        storages_context_to_pass = {
-            storage['id']: {
-                key: value
-                for key, value in storage.items()
-                if key not in ['id', '_state']
-            }
-            for storage in [
-                storage.__dict__ for storage in Storage.objects.all()
-            ]
-        }
-
         context['storages'] = json.dumps(
-            storages_context_to_pass,
+            serialize_queryset(Storage),
             use_decimal=True,
         )
 
@@ -77,6 +76,41 @@ class RentalOrderView(CreateView):
         size = form.instance.size
         duration = form.instance.duration
         total_price = duration * (base_price + additional_price * (size - 1))
+
+        form.instance.total_price = total_price
+        return super().form_valid(form)
+
+
+class StoringOrderView(CreateView):
+    model = models.StoringOrder
+    form_class = forms.StoreItemForm
+    template_name = "storage_rental/storing_order.html"
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('application', kwargs={'pk': self.object.id})
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(StoringOrderView, self).get_context_data(
+            *args, **kwargs
+        )
+
+        context['items'] = json.dumps(
+            serialize_queryset(Item),
+            use_decimal=True,
+        )
+
+        return context
+
+    def form_valid(self, form):
+        week_price = form.instance.item.week_storage_price
+        month_price = form.instance.item.month_storage_price
+        duration = form.instance.duration
+        quantity = form.instance.quantity
+
+        if duration < 4:
+            total_price = quantity * duration * week_price
+        else:
+            total_price = quantity * (duration // 4) * month_price
 
         form.instance.total_price = total_price
         return super().form_valid(form)
@@ -96,50 +130,6 @@ class PaymentView(UpdateView):
     form_class = forms.PaymentForm
     template_name = "storage_rental/payment.html"
     success_url = reverse_lazy("thanks")
-
-
-class StoringOrderView(CreateView):
-    model = models.StoringOrder
-    form_class = forms.StoreItemForm
-    template_name = "storage_rental/storing_order.html"
-
-    def get_success_url(self) -> str:
-        return reverse_lazy('application', kwargs={'pk': self.object.id})
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(StoringOrderView, self).get_context_data(
-            *args, **kwargs
-        )
-
-        items_context_to_pass = {
-            item['id']: {
-                key: value
-                for key, value in item.items()
-                if key not in ['id', '_state']
-            }
-            for item in [item.__dict__ for item in Item.objects.all()]
-        }
-
-        context['items'] = json.dumps(
-            items_context_to_pass,
-            use_decimal=True,
-        )
-
-        return context
-
-    def form_valid(self, form):
-        week_price = form.instance.item.week_storage_price
-        month_price = form.instance.item.month_storage_price
-        duration = form.instance.duration
-        quantity = form.instance.quantity
-
-        if duration < 4:
-            total_price = quantity * duration * week_price
-        else:
-            total_price = quantity * (duration // 4) * month_price
-
-        form.instance.total_price = total_price
-        return super().form_valid(form)
 
 
 def thanks(request):

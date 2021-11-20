@@ -15,16 +15,26 @@ class FormPrettifyFieldsMixin(forms.Form):
                 obj.widget.attrs['id'] = name
 
 
-class RentBoxForm(FormPrettifyFieldsMixin, forms.ModelForm):
+class PromoFieldMixin(forms.Form):
+    promocode = forms.IntegerField(label='Промокод')
+
+
+class RentBoxForm(PromoFieldMixin, FormPrettifyFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.RentalOrder
         fields = ('storage', 'size', 'duration')
 
 
+class StoreItemForm(PromoFieldMixin, FormPrettifyFieldsMixin, forms.ModelForm):
+    class Meta:
+        model = models.StoringOrder
+        fields = ('storage', 'item', 'quantity', 'duration')
+
+
 class ApplicationForm(FormPrettifyFieldsMixin, forms.ModelForm):
     is_agree = forms.BooleanField(
         required=True,
-        label="Соглашаюсь с условиями обработки персональных данных",
+        label='Соглашаюсь с условиями обработки персональных данных',
     )
 
     class Meta:
@@ -40,7 +50,7 @@ class ApplicationForm(FormPrettifyFieldsMixin, forms.ModelForm):
 class PaymentForm(FormPrettifyFieldsMixin, forms.ModelForm):
     card = forms.CharField(
         required=True,
-        label="Номер карты",
+        label='Номер карты',
         validators=[MinLengthValidator(16)],
     )
 
@@ -56,9 +66,3 @@ class PaymentForm(FormPrettifyFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.Order
         fields = ('is_processed',)
-
-
-class StoreItemForm(FormPrettifyFieldsMixin, forms.ModelForm):
-    class Meta:
-        model = models.StoringOrder
-        fields = ('storage', 'item', 'quantity', 'duration')

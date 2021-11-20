@@ -60,7 +60,8 @@
                         : quantity * Math.floor(duration / 4) * month_price
 
                 itemDetailsEl.style.display = 'block';
-                itemImageEl.setAttribute('src', item.image)
+                console.log(item.image)
+                itemImageEl.setAttribute('src', 'media/' + item.image)
                 itemPriceDetailsEl.innerHTML = 'Стоимость хранения за ед. ' + week_price + ' руб/неделю, ' + month_price + ' руб/месяц'
             }
             else {
