@@ -51,6 +51,7 @@ class RentalOrderAdmin(admin.ModelAdmin):
         '__str__',
         'person_name',
         'storage',
+        'discount',
         'is_processed',
         'total_price',
     )
@@ -64,6 +65,7 @@ class StoringOrderAdmin(admin.ModelAdmin):
         '__str__',
         'person_name',
         'storage',
+        'discount',
         'is_processed',
         'total_price',
     )

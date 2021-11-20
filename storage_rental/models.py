@@ -143,6 +143,8 @@ class Order(models.Model):
         default=False,
     )
 
+    discount = models.PositiveIntegerField('скидка', default=0)
+
 
 class RentalOrder(Order):
     class Duration(models.IntegerChoices):
