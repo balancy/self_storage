@@ -17,15 +17,16 @@
     </form>
 
     <p class="mt-1 mb-3">
-        <strong>Итоговая сумма: <span id="totalPrice">0</span></strong>
+        <strong>Итоговая сумма: <span id="total_price_label">0</span></strong>
     </p>
 
     <p class="my-3">
         <button class="btn btn-outline-dark" onclick="checkPromocode()">
             Применить промокод
         </button>
-        <span class="ml-2" id="discount">
-        </span>
+        <strong class="ml-2">
+            Скидка по промокоду: <span id="discount_label">0</span>%
+        </strong>
     </p>
 
     <div class="my-3" id="item_details" style="display: none;">
@@ -39,16 +40,17 @@
 
         const today = new Date().toISOString().slice(0, 10)
 
-        const itemEl = document.querySelector("#item");
-        const durationEl = document.querySelector("#duration");
-        const quantityEl = document.querySelector("#quantity");
-        const totalPriceEl = document.querySelector("#totalPrice");
-
-        const itemImageEl = document.querySelector("#item_img");
-        const itemDetailsEl = document.querySelector("#item_details");
-        const itemPriceDetailsEl = document.querySelector("#item_price_details");
-        const promocodeEl = document.querySelector("#promocode");
         const discountEl = document.querySelector("#discount");
+        const discountLabelEl = document.querySelector("#discount_label");
+        const durationEl = document.querySelector("#duration");
+        const itemDetailsEl = document.querySelector("#item_details");
+        const itemEl = document.querySelector("#item");
+        const itemImageEl = document.querySelector("#item_img");
+        const itemPriceDetailsEl = document.querySelector("#item_price_details");
+        const quantityEl = document.querySelector("#quantity");
+        const promocodeEl = document.querySelector("#promocode");
+        const totalPriceEl = document.querySelector("#total_price");
+        const totalPriceLabelEl = document.querySelector("#total_price_label");
 
         [itemEl, quantityEl, durationEl].forEach(item => {
             item.addEventListener('change', event => {
@@ -57,8 +59,9 @@
         })
 
         let currentDiscount = 0;
-        let week_price;
-        let month_price;
+        let totalPrice = 0;
+        let weekPrice;
+        let monthPrice;
         let duration;
         let quantity;
         let currentItem;
@@ -67,17 +70,20 @@
             currentItem = allItems[itemEl.value];
 
             if (currentItem){
-                week_price = currentItem.week_storage_price;
-                month_price = currentItem.month_storage_price;
+                weekPrice = currentItem.week_storage_price;
+                monthPrice = currentItem.month_storage_price;
                 duration = durationEl.value;
                 quantity = quantityEl.value;
 
-                totalPriceEl.innerHTML = duration < 4
-                        ? (1 - currentDiscount/100) * quantity * duration * week_price
-                        : (1 - currentDiscount/100) * quantity * Math.floor(duration / 4) * month_price
+                totalPrice = duration < 4
+                    ? (1 - currentDiscount/100) * quantity * duration * weekPrice
+                    : (1 - currentDiscount/100) * quantity * Math.floor(duration / 4) * monthPrice
             } else {
-                totalPriceEl.innerHTML = 0;
+                totalPrice = 0;
             }
+
+            totalPriceLabelEl.innerHTML = totalPrice;
+            totalPriceEl.value = totalPrice;
         }
 
         const checkPromocode = () => {
@@ -90,13 +96,13 @@
 
                 if (isActive) {
                     currentDiscount = currentPromocode.discount;
-                    discountEl.innerHTML = "Скидка по промокоду: " +
-                        currentDiscount + "%";
                 }
             } else {
                 currentDiscount = 0;
-                discountEl.innerHTML = "";
             }
+
+            discountLabelEl.innerHTML = currentDiscount;
+            discountEl.value = currentDiscount;
 
             calculateTotalPrice();
         }
@@ -105,14 +111,14 @@
             currentItem = allItems[itemEl.value]
 
             if (currentItem) {
-                week_price = currentItem.week_storage_price;
-                month_price = currentItem.month_storage_price;
+                weekPrice = currentItem.week_storage_price;
+                monthPrice = currentItem.month_storage_price;
 
                 itemDetailsEl.style.display = 'block';
                 itemImageEl.setAttribute('src', 'media/' + currentItem.image);
                 itemPriceDetailsEl.innerHTML =
-                    'Стоимость хранения за единицу: ' + week_price +
-                    ' руб/неделю, ' + month_price + ' руб/месяц';
+                    'Стоимость хранения за единицу: ' + weekPrice +
+                    ' руб/неделю, ' + monthPrice + ' руб/месяц';
             } else {
                 itemDetailsEl.style.display = 'none';
             }

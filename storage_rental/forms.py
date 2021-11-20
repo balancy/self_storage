@@ -28,7 +28,18 @@ class RentBoxForm(PromoFieldMixin, FormPrettifyFieldsMixin, forms.ModelForm):
 class StoreItemForm(PromoFieldMixin, FormPrettifyFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.StoringOrder
-        fields = ('storage', 'item', 'quantity', 'duration')
+        fields = (
+            'storage',
+            'item',
+            'quantity',
+            'duration',
+            'total_price',
+            'discount',
+        )
+        widgets = {
+            'total_price': forms.HiddenInput(),
+            'discount': forms.HiddenInput(),
+        }
 
 
 class ApplicationForm(FormPrettifyFieldsMixin, forms.ModelForm):
