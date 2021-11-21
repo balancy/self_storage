@@ -7,15 +7,41 @@
 
 {% block content %}
 <div class="container">
-    <br />
-    <h1>Оплатите заказ</h1>
-    <br />
+    <h1 class="my-4">Оплатите заказ</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <br>
-        <button class="btn btn-outline-dark" type="submit">Оплатить</button>
+
+        <div class="row">
+          {% for field in form  %}
+            {% if field.name not in 'total_price,is_processed' %}
+              <div class="my-2">
+                {{ field.label_tag }} {{ field }}
+                <span class="red">{{ field.errors }}</span>
+              </div>
+            {% elif field.name == 'is_processed' %}
+              <div class="my-3">
+                {{ field }} {{ field.label_tag }}
+                <span class="red">{{ field.errors }}</span>
+              </div>
+            {% else %}
+              {{field}}
+            {% endif%}
+          {% endfor %}
+        </div>
+
+        <p class="my-4 float-end">
+            <strong>Сумма заказа: <span id="total_price_label">0</span></strong>
+        </p>
+
+        <button class="btn btn-dark my-3" type="submit">Оплатить</button>
     </form>
+
+    <script>
+        const totalPriceEl = document.querySelector("#total_price");
+        const totalPriceLabelEl = document.querySelector("#total_price_label");
+
+        totalPriceLabelEl.innerHTML = totalPriceEl.value;
+    </script>
 </div>
 
 {% endblock %}

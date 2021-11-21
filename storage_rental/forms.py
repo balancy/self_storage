@@ -10,7 +10,7 @@ class FormPrettifyFieldsMixin(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for name, obj in self.fields.items():
-            if name not in ('is_agree', 'is_processed', 'birth_date'):
+            if name not in ('is_agree', 'is_processed'):
                 obj.widget.attrs['class'] = f'form-control mt-3'
                 obj.widget.attrs['id'] = name
 
@@ -59,7 +59,9 @@ class ApplicationForm(FormPrettifyFieldsMixin, forms.ModelForm):
             'phone_number',
             'passport_number',
             'birth_date',
+            'total_price',
         )
+        widgets = {'total_price': forms.HiddenInput()}
 
 
 class PaymentForm(FormPrettifyFieldsMixin, forms.ModelForm):
@@ -69,8 +71,10 @@ class PaymentForm(FormPrettifyFieldsMixin, forms.ModelForm):
         validators=[MinLengthValidator(16)],
     )
 
-    def clean(self):
-        if not self.cleaned_data['is_processed']:
+    def clean_is_processed(self):
+        is_processed = self.cleaned_data['is_processed']
+
+        if not is_processed:
             raise ValidationError(
                 _(
                     'Вы должны заполнить все данные для оплаты (заглушка в '
@@ -78,6 +82,9 @@ class PaymentForm(FormPrettifyFieldsMixin, forms.ModelForm):
                 )
             )
 
+        return is_processed
+
     class Meta:
         model = models.Order
-        fields = ('is_processed',)
+        fields = ('is_processed', 'total_price')
+        widgets = {'total_price': forms.HiddenInput()}

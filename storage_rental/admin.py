@@ -14,6 +14,7 @@ class ItemAdmin(admin.ModelAdmin):
         )
 
     list_display = (
+        'id',
         'type',
         'image_tag',
         'week_storage_price',
@@ -33,6 +34,7 @@ class StorageAdmin(admin.ModelAdmin):
         )
 
     list_display = (
+        'id',
         'name',
         'image_tag',
         'address',
@@ -48,6 +50,7 @@ class StorageAdmin(admin.ModelAdmin):
 @admin.register(RentalOrder)
 class RentalOrderAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         '__str__',
         'person_name',
         'storage',
@@ -62,6 +65,7 @@ class RentalOrderAdmin(admin.ModelAdmin):
 @admin.register(StoringOrder)
 class StoringOrderAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         '__str__',
         'person_name',
         'storage',
@@ -76,6 +80,6 @@ class StoringOrderAdmin(admin.ModelAdmin):
 
 @admin.register(PromoСode)
 class PromocodeAdmin(admin.ModelAdmin):
-    list_display = ('code', 'start_date', 'end_date', 'discount')
+    list_display = ('id', 'code', 'start_date', 'end_date', 'discount')
 
     ordering = ('code',)

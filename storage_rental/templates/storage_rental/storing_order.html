@@ -10,24 +10,36 @@
     <h1 class="my-4">Сезонное хранение</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="row">
+          {% for field in form  %}
+            {% if field.name not in 'total_price,discount' %}
+              <div class="my-2">
+                {{ field.label_tag }} {{ field }}
+                <span class="red">{{ field.errors }}</span>
+              </div>
+            {% else %}
+              {{field}}
+            {% endif%}
+          {% endfor %}
+        </div>
+
+        <p class="my-3">
+            <button class="btn btn-outline-dark" type="button" onclick="checkPromocode()">
+                Применить промокод
+            </button>
+            <strong class="mx-2">
+                Скидка по промокоду: <span id="discount_label">0</span>%
+            </strong>
+        </p>
+
+        <p class="my-4 float-end">
+            <strong>Сумма заказа: <span id="total_price_label">0</span></strong>
+        </p>
+
         <button class="btn btn-dark my-3" type="submit">
             Сдать на хранение
         </button>
     </form>
-
-    <p class="mt-1 mb-3">
-        <strong>Итоговая сумма: <span id="total_price_label">0</span></strong>
-    </p>
-
-    <p class="my-3">
-        <button class="btn btn-outline-dark" onclick="checkPromocode()">
-            Применить промокод
-        </button>
-        <strong class="ml-2">
-            Скидка по промокоду: <span id="discount_label">0</span>%
-        </strong>
-    </p>
 
     <div class="my-3" id="item_details" style="display: none;">
         <p id="item_price_details"></p>
