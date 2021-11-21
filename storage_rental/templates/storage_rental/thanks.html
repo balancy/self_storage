@@ -7,11 +7,17 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="my-4">Спасибо за бронирование. Оплата принята.</h1>
-    <p>Вам на почту в течение следующих нескольких минут придёт письмо с QR кодом доступа и подробными инструкциями как пользоваться арендованным местом.</p>
-    <form action="{% url 'index' %}">
-        <button class="btn btn-dark" type="submit">Вернуться на главную</button>
-    </form>
+    <div class="card my-3">
+      <div class="form-title">
+        <h2 class="bold">Спасибо за бронирование</h2>
+      </div>
+      <div class="card-body">
+        <p>Оплата принята. Вам на почту в течение следующих нескольких минут придёт письмо с QR кодом доступа и подробными инструкциями как пользоваться арендованным местом.</p>
+        <form action="{% url 'index' %}">
+            <button class="btn btn-warning" type="submit">Вернуться на главную</button>
+        </form>
+      </div>
+    </div>
 </div>
 
 {% endblock %}

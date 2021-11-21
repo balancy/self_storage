@@ -7,34 +7,40 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="my-4">Оплатите заказ</h1>
-    <form method="post">
-        {% csrf_token %}
+    <div class="card my-3">
+      <div class="form-title">
+        <h2 class="bold">Оплата заказа</h2>
+      </div>
+      <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
 
-        <div class="row">
-          {% for field in form  %}
-            {% if field.name not in 'total_price,is_processed' %}
-              <div class="my-2">
-                {{ field.label_tag }} {{ field }}
-                <span class="red">{{ field.errors }}</span>
-              </div>
-            {% elif field.name == 'is_processed' %}
-              <div class="my-3">
-                {{ field }} {{ field.label_tag }}
-                <span class="red">{{ field.errors }}</span>
-              </div>
-            {% else %}
-              {{field}}
-            {% endif%}
-          {% endfor %}
-        </div>
+            <div class="row">
+            {% for field in form  %}
+                {% if field.name not in 'total_price,is_processed' %}
+                <div class="my-2">
+                    {{ field.label_tag }} {{ field }}
+                    <span class="red">{{ field.errors }}</span>
+                </div>
+                {% elif field.name == 'is_processed' %}
+                <div class="my-3">
+                    {{ field }} {{ field.label_tag }}
+                    <span class="red">{{ field.errors }}</span>
+                </div>
+                {% else %}
+                {{field}}
+                {% endif%}
+            {% endfor %}
+            </div>
 
-        <p class="my-4 float-end">
-            <strong>Сумма заказа: <span id="total_price_label">0</span></strong>
-        </p>
+            <p class="my-4 float-end">
+                <strong>Сумма заказа: <span id="total_price_label">0</span></strong>
+            </p>
 
-        <button class="btn btn-dark my-3" type="submit">Оплатить</button>
-    </form>
+            <button class="btn btn-warning my-3" type="submit">Оплатить</button>
+        </form>
+      </div>
+    </div>
 
     <script>
         const totalPriceEl = document.querySelector("#total_price");

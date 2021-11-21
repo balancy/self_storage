@@ -1,5 +1,6 @@
 .container {
     width: 1000px;
+    font-family: "Verdana", "Arial", "Helvetica Neue", sans-serif;
 }
 
 .caption-bg {
@@ -8,4 +9,20 @@
 
 .red {
     color: red;
+}
+
+.form-title {
+    background-color: #ffc107;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin: 0;
+    padding: 20px;
+}
+
+.bold {
+    font-weight: 600;
 }

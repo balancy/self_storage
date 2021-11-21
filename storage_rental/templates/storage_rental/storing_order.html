@@ -7,43 +7,50 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="my-4">Сезонное хранение</h1>
-    <form method="post">
-        {% csrf_token %}
-        <div class="row">
-          {% for field in form  %}
-            {% if field.name not in 'total_price,discount' %}
-              <div class="my-2">
-                {{ field.label_tag }} {{ field }}
-                <span class="red">{{ field.errors }}</span>
-              </div>
-            {% else %}
-              {{field}}
-            {% endif%}
-          {% endfor %}
+    <div class="card my-3">
+      <div class="form-title">
+        <h2 class="bold">Сезонное хранение</h2>
+      </div>
+      <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+              {% for field in form  %}
+                {% if field.name not in 'total_price,discount' %}
+                  <div class="my-2">
+                    {{ field.label_tag }} {{ field }}
+                    <span class="red">{{ field.errors }}</span>
+                  </div>
+                {% else %}
+                  {{field}}
+                {% endif%}
+              {% endfor %}
+            </div>
+
+            <p class="my-3">
+                <button class="btn btn-outline-dark" type="button" onclick="checkPromocode()">
+                    Применить промокод
+                </button>
+                <strong class="mx-2">
+                    Скидка по промокоду: <span id="discount_label">0</span>%
+                </strong>
+            </p>
+
+            <p class="my-4 float-end">
+                <strong>Сумма заказа: <span id="total_price_label">0</span></strong>
+            </p>
+
+            <button class="btn btn-warning my-3" type="submit">
+                Сдать на хранение
+            </button>
+        </form>
+
+        <div class="my-3" id="item_details" style="display: none;">
+            <p id="item_price_details"></p>
+            <img class="mt-1" width="400px;" height="400px;" id="item_img"/>
         </div>
 
-        <p class="my-3">
-            <button class="btn btn-outline-dark" type="button" onclick="checkPromocode()">
-                Применить промокод
-            </button>
-            <strong class="mx-2">
-                Скидка по промокоду: <span id="discount_label">0</span>%
-            </strong>
-        </p>
-
-        <p class="my-4 float-end">
-            <strong>Сумма заказа: <span id="total_price_label">0</span></strong>
-        </p>
-
-        <button class="btn btn-dark my-3" type="submit">
-            Сдать на хранение
-        </button>
-    </form>
-
-    <div class="my-3" id="item_details" style="display: none;">
-        <p id="item_price_details"></p>
-        <img class="mt-1" width="400px;" height="400px;" id="item_img"/>
+      </div>
     </div>
 
     {{ items|json_script:"all_items" }}
