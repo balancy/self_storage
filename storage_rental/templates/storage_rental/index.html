@@ -48,10 +48,10 @@
       {% for storage in all_places %}
         <div class="carousel-item{% if forloop.first %} active{% endif %}">
           <img src="{{ storage.image }}" height="700px;" class="d-block w-100" alt="{{ storage.name }}">
-          <div class="carousel-caption d-none d-md-block">
-            <h5>{{ storage.name }}, {{ storage.address }}</h5>
-            Стоимость за первый м²: {{ storage.base_price }}<br/>
-            Стоимость за каждый дополнительный м²: {{ storage.additional_price }}
+          <div class="carousel-caption d-none d-md-block caption-bg">
+            <h4 class="my-1">{{ storage.name }}, {{ storage.address }}</h4>
+            <p class="my-0">Стоимость за первый м²: {{ storage.base_price }}<br/></p>
+            <p class="my-0">Стоимость за каждый дополнительный м²: {{ storage.additional_price }}</p>
           </div>
         </div>
       {% endfor %}

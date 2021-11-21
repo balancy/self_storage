@@ -1,3 +1,7 @@
 .container {
     width: 1000px;
 }
+
+.caption-bg {
+    background-color: rgba(0, 0, 0, 0.5);
+}
