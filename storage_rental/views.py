@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic.edit import UpdateView
-import simplejson as json
 
 from . import forms
 from . import models
@@ -63,14 +62,8 @@ class RentalOrderView(CreateView):
             *args, **kwargs
         )
 
-        context['promocodes'] = json.dumps(
-            serialize_queryset(PromoСode, field='code'),
-            default=str,
-        )
-        context['storages'] = json.dumps(
-            serialize_queryset(Storage),
-            use_decimal=True,
-        )
+        context['promocodes'] = serialize_queryset(PromoСode, field='code')
+        context['storages'] = serialize_queryset(Storage)
 
         return context
 
@@ -88,14 +81,8 @@ class StoringOrderView(CreateView):
             *args, **kwargs
         )
 
-        context['promocodes'] = json.dumps(
-            serialize_queryset(PromoСode, field='code'),
-            default=str,
-        )
-        context['items'] = json.dumps(
-            serialize_queryset(Item),
-            use_decimal=True,
-        )
+        context['promocodes'] = serialize_queryset(PromoСode, field='code')
+        context['items'] = serialize_queryset(Item)
 
         return context
 

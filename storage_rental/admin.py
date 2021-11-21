@@ -65,6 +65,7 @@ class StoringOrderAdmin(admin.ModelAdmin):
         '__str__',
         'person_name',
         'storage',
+        'duration',
         'discount',
         'is_processed',
         'total_price',

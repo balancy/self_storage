@@ -217,7 +217,7 @@ class StoringOrder(Order):
         verbose_name_plural = 'заказы на хранение инвентаря'
 
     def __str__(self):
-        return f'Заказ на хранение {self.quantity} {self.item} на {self.duration} месяцев'
+        return f'Заказ на хранение {self.quantity} {self.item}'
 
 
 class PromoСode(models.Model):
