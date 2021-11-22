@@ -58,7 +58,6 @@ class ApplicationForm(FormPrettifyFieldsMixin, forms.ModelForm):
         birth_date = self.cleaned_data['birth_date']
         years = (date.today() - birth_date).days / 365.25
 
-        print(years)
         if years < 14:
             raise ValidationError(_("Возраст должен быть не меньше 14 лет!"))
 
