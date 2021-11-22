@@ -2,7 +2,13 @@
 {% load static %}
 
 {% block header %}
-<title>Self Storage - Анкета</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <title>Self Storage - Анкета</title>
 {% endblock %}
 
 {% block content %}
@@ -15,20 +21,26 @@
         <form method="post">
             {% csrf_token %}
             <div class="row">
-            {% for field in form  %}
-                {% if field.name not in 'total_price,is_agree' %}
-                <div class="my-2">
-                    {{ field.label_tag }} {{ field }}
-                    <span class="red">{{ field.errors }}</span>
-                </div>
+              {% for field in form  %}
+                {% if field.name not in 'total_price,is_agree,birth_date' %}
+                    <div class="my-2">
+                        {{ field.label_tag }} {{ field }}
+                        <span class="red">{{ field.errors }}</span>
+                    </div>
+                {% elif field.name == 'birth_date' %}
+                    <div class="my-2 date" id="datepicker" data-date-format="yyyy-mm-dd">
+                        {{ field.label_tag }} {{ field }}
+                        <span class="input-group-append"></span>
+                        <span class="red">{{ field.errors }}</span>
+                    </div>
                 {% elif field.name == 'is_agree' %}
-                <div class="my-3">
-                    {{ field }} {{ field.label_tag }}
-                </div>
+                    <div class="my-3">
+                        {{ field }} {{ field.label_tag }}
+                    </div>
                 {% else %}
-                {{field}}
+                    {{field}}
                 {% endif%}
-            {% endfor %}
+              {% endfor %}
             </div>
 
             <p class="my-3">
@@ -63,8 +75,9 @@
       </div>
     </div>
 
-
     <script>
+        $(function() {$('#datepicker').datepicker();});
+
         const totalPriceEl = document.querySelector("#total_price");
         const totalPriceLabelEl = document.querySelector("#total_price_label");
 
