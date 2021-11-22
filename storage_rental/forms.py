@@ -1,3 +1,5 @@
+from datetime import date
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
@@ -51,6 +53,16 @@ class ApplicationForm(FormPrettifyFieldsMixin, forms.ModelForm):
         required=True,
         label='Соглашаюсь с условиями обработки персональных данных',
     )
+
+    def clean_birth_date(self):
+        birth_date = self.cleaned_data['birth_date']
+        years = (date.today() - birth_date).days / 365.25
+
+        print(years)
+        if years < 14:
+            raise ValidationError(_("Возраст должен быть не меньше 14 лет!"))
+
+        return birth_date
 
     class Meta:
         model = models.Order

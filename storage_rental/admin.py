@@ -21,8 +21,6 @@ class ItemAdmin(admin.ModelAdmin):
         'month_storage_price',
     )
 
-    ordering = ('type',)
-
 
 @admin.register(Storage)
 class StorageAdmin(admin.ModelAdmin):
@@ -44,8 +42,6 @@ class StorageAdmin(admin.ModelAdmin):
         'additional_price',
     )
 
-    ordering = ('name',)
-
 
 @admin.register(RentalOrder)
 class RentalOrderAdmin(admin.ModelAdmin):
@@ -58,8 +54,6 @@ class RentalOrderAdmin(admin.ModelAdmin):
         'is_processed',
         'total_price',
     )
-
-    ordering = ('person_name',)
 
 
 @admin.register(StoringOrder)
@@ -81,5 +75,3 @@ class StoringOrderAdmin(admin.ModelAdmin):
 @admin.register(PromoСode)
 class PromocodeAdmin(admin.ModelAdmin):
     list_display = ('id', 'code', 'start_date', 'end_date', 'discount')
-
-    ordering = ('code',)
