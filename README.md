@@ -24,6 +24,8 @@ After successful payment, the user receives on his email a QR-code with access t
 
 At least Python3.8, Git and Poetry should be already installed.
 
+For production, Docker is also required.
+
 1. Clone the repository
 ```
 git clone git@github.com:balancy/self_storage.git
@@ -36,7 +38,48 @@ poetry install
 poetry shell
 ```
 
-3. Rename `.env.example` to `.env` and define environment variables
+#### Development version
+
+3. Rename `.env.example` to `.env` and change `SECRET_KEY` environment variable
 
 - `SECRET_KEY`  - django secret key
-- `DEBUG`       - if True, django is in dev mode
+
+4. Create superuser
+
+```
+python manage.py createsuperuser
+```
+
+5. Migrate the database
+
+```
+python manage.py migrate
+```
+
+
+#### Production version
+
+3. Rename `.env.dev.example` to `.env.dev` and change environment variables (at least `SECRET_KEY`)
+
+- `SECRET_KEY`  - djngo secret key
+- `POSTGRES_DB` - name of the database
+- `POSTGRES_USER` - username for the database
+- `POSTGRES_PASSWORD` - password for the database
+
+## Run
+
+#### Development version
+
+```
+python manage.py runserver
+```
+
+Site will be available via `127.0.0.1:8000`
+
+#### Production version
+
+```
+docker compose up --build
+```
+
+Site will be available via `127.0.0.1`
