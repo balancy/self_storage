@@ -1,15 +1,24 @@
 version: '3.8'
 
 services:
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.dev
+
   django_gunicorn:
     volumes:
       - static_volume:/app/staticfiles
-      - ./:/app
     env_file:
-      - ./.env
+      - ./.env.dev
     build: ./
     ports:
       - "8080:8080"
+    depends_on:
+      - db
+
   nginx:
     build: ./nginx
     volumes:
@@ -21,3 +30,4 @@ services:
 
 volumes:
   static_volume: null
+  postgres_data: null

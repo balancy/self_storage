@@ -1,0 +1,10 @@
+Dockerfile
+.venv
+__pycache__
+docker-compose.yml
+*.sqlite3
+.env.example
+media
+staticfiles
+nginx
+README.md
